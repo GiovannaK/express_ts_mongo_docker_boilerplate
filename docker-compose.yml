@@ -1,0 +1,27 @@
+version: "3"
+services:
+  database_api:
+    image:  mongo
+    container_name: database_api
+    ports:
+      - ${DB_PORT}:27017
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    volumes:
+      - /mongodb/db:/data/db
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - ${PORT}:3001
+    command: yarn dev
+    volumes:
+      - .:/usr/src/app
+    environment:
+      DB_HOST: database_api
+    depends_on:
+      - database_api
