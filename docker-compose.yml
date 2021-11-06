@@ -6,6 +6,7 @@ services:
     ports:
       - ${DB_PORT}:27017
     restart: always
+    command: mongod --quiet --logpath /tmp/mongo.log --setParameter logLevel=0
     environment:
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
       MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
